@@ -29,9 +29,10 @@ class MoviesReviewsCount(MRJob):
                   ]
     #Mapping Function
     def mapper_get_movies(self, _, line):
-         (userId, movieId, rating, timestamp) = line.split(',')
+         (userId, movieId, rating, timestamp) = line.split('\t')
          yield movieId, rating
-	#Reduce Function
+
+    #Reducer used to calculate total reviews and average
     def reducer_count_avg_reviews(self, key, values):
 	count = 0
 	total = 0
@@ -40,13 +41,12 @@ class MoviesReviewsCount(MRJob):
 		count += 1	
 	avg = total/float(count)
 	res =  str(count) + "," + key
-        yield avg, (int(key),int(count))
-
+        yield float(avg), (int(key),int(count))
+	
+    # Reducer used to sort
     def reducer_sort_reviews(self, avg, key):
-	#(count, movieId) = (info).split(",")
-	#res = avg + ", " + count + ", " + movieId
 	for movie_info in (key):
-		yield None, (avg, movie_info[0], movie_info[1])
+		yield None, ('%.02f'%float(avg), movie_info[0], movie_info[1])
 
 if __name__ == '__main__':
     sys.stderr.write("starting your first MapReduce job \n")
