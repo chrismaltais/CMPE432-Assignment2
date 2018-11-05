@@ -45,8 +45,8 @@ class MoviesReviewsCount(MRJob):
 	
     # Reducer used to sort
     def reducer_sort_reviews(self, avg, key):
-	for movie_info in (key):
-		yield None, ('%.02f'%float(avg), movie_info[0], movie_info[1])
+	    for movie_info in (key):
+		    yield None, ('%.02f'%float(avg), movie_info[0], movie_info[1])
 
 if __name__ == '__main__':
     sys.stderr.write("starting your first MapReduce job \n")
