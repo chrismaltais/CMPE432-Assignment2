@@ -34,7 +34,7 @@ class MoviesReviewsCount(MRJob):
 
     #Reducer used to calculate total reviews and average
     def reducer_count_avg_reviews(self, key, values):
-	count = 0
+    count = 0
 	total = 0
 	for value in values:
 		total += int(value)
